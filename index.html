@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DZV Moda Masculina - Precificação & Margem de Lucro</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#0A0A0A',
+                            dark: '#171717',
+                            gray: '#737373',
+                            light: '#F5F5F5',
+                            border: '#E5E5E5'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAFAFA;
+            color: #0A0A0A;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F1F1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CCCCCC;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999999;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+    <header class="bg-black text-white sticky top-0 z-50 border-b border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white text-black p-2 font-black text-xl tracking-tighter">DZV</div>
+                    <div>
+                        <span class="text-sm font-bold tracking-[0.2em] block uppercase leading-none">MODA MASCULINA</span>
+                        <span class="text-[10px] text-neutral-400 font-light tracking-widest uppercase">Calculadora & Gestão de Lucro</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-6 text-xs uppercase tracking-widest">
+                    <span class="text-neutral-400"><i class="fa-solid fa-chart-line mr-2 text-white"></i>Precificação Inteligente</span>
+                    <span class="text-neutral-400"><i class="fa-solid fa-link mr-2 text-white"></i>Gestão de Fornecedores</span>
+                    <span class="text-neutral-400"><i class="fa-solid fa-shield-halved mr-2 text-white"></i>Margem de Segurança</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1 space-y-8">
+
+        <div class="bg-white p-6 border border-neutral-200 shadow-xs rounded-none flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold uppercase tracking-wider text-black">Calculadora de Precificação & Margem de Lucro</h1>
+                <p class="text-xs text-neutral-500 mt-1">Simule custos, links de fornecedores, taxas operacionais e encontre o preço ideal para a marca DZV.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+                <div class="flex items-center space-x-1.5 bg-emerald-50 text-emerald-800 px-2.5 py-1 border border-emerald-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span>Excelente (&gt; 30%)</span>
+                </div>
+                <div class="flex items-center space-x-1.5 bg-blue-50 text-blue-800 px-2.5 py-1 border border-blue-200">
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <span>Saudável (20%-30%)</span>
+                </div>
+                <div class="flex items-center space-x-1.5 bg-amber-50 text-amber-800 px-2.5 py-1 border border-amber-200">
+                    <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+                    <span>Atenção (10%-20%)</span>
+                </div>
+                <div class="flex items-center space-x-1.5 bg-rose-50 text-rose-800 px-2.5 py-1 border border-rose-200">
+                    <span class="w-2 h-2 rounded-full bg-rose-600"></span>
+                    <span>Risco (&lt; 10%)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <div class="lg:col-span-5 bg-white p-6 border border-neutral-200 shadow-xs space-y-6">
+                <div class="flex justify-between items-center border-b border-neutral-100 pb-4">
+                    <h2 class="text-sm font-bold uppercase tracking-widest text-black flex items-center">
+                        <i class="fa-solid fa-sliders mr-2"></i>Simulador de Custos
+                    </h2>
+                    <button type="button" onclick="resetForm()" class="text-[11px] text-neutral-400 hover:text-black uppercase tracking-wider underline">
+                        Limpar
+                    </button>
+                </div>
+
+                <form id="calcForm" class="space-y-4">
+                    <input type="hidden" id="editingId" value="">
+
+                    <!-- Nome do Produto -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
+                            Nome do Produto
+                        </label>
+                        <input type="text" id="productName" value="Camiseta Minimal Essential" 
+                            class="w-full text-xs p-3 border border-neutral-300 focus:border-black focus:outline-none transition bg-neutral-50/30" placeholder="Ex: Camisa Polo Linho">
+                    </div>
+
+                    <!-- Categoria do Produto -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
+                            Categoria
+                        </label>
+                        <select id="productCategory" class="w-full text-xs p-3 border border-neutral-300 focus:border-black focus:outline-none bg-neutral-50/30">
+                            <option value="Camisetas">Camisetas</option>
+                            <option value="Camisas">Camisas</option>
+                            <option value="Casacos">Casacos</option>
+                            <option value="Calças">Calças</option>
+                            <option value="Acessórios">Acessórios</option>
+                        </select>
+                    </div>
+
+                    <!-- Link do Fornecedor -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
+                            Link do Fornecedor / Fabricante
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-neutral-400">
+                                <i class="fa-solid fa-link text-xs"></i>
+                            </span>
+                            <input type="url" id="supplierUrl" value="https://fornecedor.com/item/123" 
+                                class="w-full text-xs pl-8 pr-3 py-3 border border-neutral-300 focus:border-black focus:outline-none transition bg-neutral-50/30" placeholder="https://link-do-fornecedor.com.br">
+                        </div>
+                    </div>
+
+                    <!-- Bloco de Custos Diretos -->
+                    <div class="p-4 bg-neutral-50 border border-neutral-200 space-y-3">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-500 block border-b border-neutral-200 pb-1">
+                            1. Custos Diretos (Produção & Envio)
+                        </span>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-neutral-600 mb-1">Custo Peça (R$)</label>
+                                <input type="number" id="costFabric" step="0.01" value="45.00" oninput="calculateMetrics()"
+                                    class="w-full text-xs p-2.5 border border-neutral-300 focus:border-black focus:outline-none bg-white font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-neutral-600 mb-1">Embalagem (R$)</label>
+                                <input type="number" id="costPackaging" step="0.01" value="5.00" oninput="calculateMetrics()"
+                                    class="w-full text-xs p-2.5 border border-neutral-300 focus:border-black focus:outline-none bg-white font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-neutral-600 mb-1">Frete Ent. (R$)</label>
+                                <input type="number" id="costShippingIn" step="0.01" value="4.00" oninput="calculateMetrics()"
+                                    class="w-full text-xs p-2.5 border border-neutral-300 focus:border-black focus:outline-none bg-white font-medium">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloco de Venda e Taxas -->
+                    <div class="p-4 bg-neutral-50 border border-neutral-200 space-y-3">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-500 block border-b border-neutral-200 pb-1">
+                            2. Preço Pretendido & Despesas Variáveis
+                        </span>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-black mb-1">Preço de Venda Pretendido (R$)</label>
+                            <input type="number" id="sellPrice" step="0.01" value="189.00" oninput="calculateMetrics()"
+                                class="w-full text-sm font-bold p-3 border-2 border-black focus:outline-none bg-white text-black">
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3 pt-2">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-neutral-600 mb-1">Imposto (%)</label>
+                                <input type="number" id="taxPercent" step="0.1" value="6.0" oninput="calculateMetrics()"
+                                    class="w-full text-xs p-2 border border-neutral-300 focus:border-black focus:outline-none bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-neutral-600 mb-1">Maquininha (%)</label>
+                                <input type="number" id="cardFeePercent" step="0.1" value="4.0" oninput="calculateMetrics()"
+                                    class="w-full text-xs p-2 border border-neutral-300 focus:border-black focus:outline-none bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-neutral-600 mb-1">Marketing (%)</label>
+                                <input type="number" id="marketingPercent" step="0.1" value="10.0" oninput="calculateMetrics()"
+                                    class="w-full text-xs p-2 border border-neutral-300 focus:border-black focus:outline-none bg-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="saveProduct()" 
+                        class="w-full bg-black text-white py-3.5 px-4 text-xs font-bold uppercase tracking-widest hover:bg-neutral-800 transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span id="btnSaveText">Salvar Peça na Planilha</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Cards de Indicadores de Desempenho (KPIs) -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    
+                    <!-- Custo Direto Total -->
+                    <div class="bg-white p-4 border border-neutral-200">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Custo Direto Total</span>
+                        <div id="kpiDirectCost" class="text-lg font-black text-black mt-1">R$ 54,00</div>
+                        <span class="text-[10px] text-neutral-500 block mt-1">Peça + Embalagem + Frete</span>
+                    </div>
+
+                    <!-- Custos Variáveis -->
+                    <div class="bg-white p-4 border border-neutral-200">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Custos Variáveis</span>
+                        <div id="kpiVariableCosts" class="text-lg font-black text-black mt-1">20,0%</div>
+                        <span id="kpiVariableCostsVal" class="text-[10px] text-neutral-500 block mt-1">R$ 37,80 por peça</span>
+                    </div>
+
+                    <!-- Preço Ponto de Equilíbrio -->
+                    <div class="bg-white p-4 border border-neutral-200">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Ponto de Equilíbrio</span>
+                        <div id="kpiBreakeven" class="text-lg font-black text-neutral-800 mt-1">R$ 67,50</div>
+                        <span class="text-[10px] text-neutral-500 block mt-1">Preço mín. sem prejuízo</span>
+                    </div>
+
+                    <!-- Lucro Líquido -->
+                    <div class="bg-white p-4 border border-neutral-200">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Lucro Líquido / Peça</span>
+                        <div id="kpiNetProfit" class="text-xl font-black text-black mt-1">R$ 97,20</div>
+                        <span class="text-[10px] text-neutral-500 block mt-1">Sobra livre no caixa</span>
+                    </div>
+
+                    <!-- Margem Líquida com Badge de Saúde -->
+                    <div id="marginCard" class="bg-white p-4 border-2 border-emerald-500 transition-all">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Margem Líquida</span>
+                        <div id="kpiMargin" class="text-xl font-black text-emerald-600 mt-1">51,4%</div>
+                        <span id="kpiHealthBadge" class="inline-block mt-1 text-[9px] font-extrabold uppercase px-2 py-0.5 bg-emerald-100 text-emerald-800">
+                            Excelente
+                        </span>
+                    </div>
+
+                    <!-- Markup -->
+                    <div class="bg-white p-4 border border-neutral-200">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">Markup Multiplicador</span>
+                        <div id="kpiMarkup" class="text-xl font-black text-black mt-1">3,50x</div>
+                        <span class="text-[10px] text-neutral-500 block mt-1">Multiplicador do custo</span>
+                    </div>
+
+                </div>
+
+                <!-- Barra Visual de Distribuição do Preço de Venda -->
+                <div class="bg-white p-6 border border-neutral-200 space-y-3">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold uppercase tracking-wider text-black">Composição do Preço de Venda (R$ <span id="barTotalPrice">189,00</span>)</span>
+                        <span class="text-neutral-400 text-[10px]">100% do Valor</span>
+                    </div>
+
+                    <div class="h-6 w-full bg-neutral-100 flex overflow-hidden p-0.5 border border-neutral-200">
+                        <div id="barDirectCost" style="width: 28.57%" class="bg-neutral-800 text-white text-[9px] font-bold flex items-center justify-center transition-all" title="Custo Direto"></div>
+                        <div id="barVariableCost" style="width: 20%" class="bg-neutral-400 text-black text-[9px] font-bold flex items-center justify-center transition-all" title="Taxas Variáveis"></div>
+                        <div id="barNetProfit" style="width: 51.43%" class="bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center transition-all" title="Lucro Líquido"></div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between text-[11px] text-neutral-600 pt-1 border-t border-neutral-100">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 bg-neutral-800 inline-block"></span>
+                            <span>Custo Direto: <strong id="lblBarDirect">R$ 54,00</strong></span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 bg-neutral-400 inline-block"></span>
+                            <span>Taxas Variáveis: <strong id="lblBarVariable">R$ 37,80</strong></span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 bg-emerald-500 inline-block"></span>
+                            <span>Lucro Líquido: <strong id="lblBarProfit">R$ 97,20</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="bg-white border border-neutral-200 p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-neutral-100 pb-4">
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-black">Planilha de Produtos Cadastrados</h3>
+                    <p class="text-xs text-neutral-400">Gerencie, acesse fornecedores e compare a margem de lucro de todo o catálogo da DZV</p>
+                </div>
+                
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                    <button onclick="exportToCSV()" 
+                        class="px-4 py-2 bg-neutral-100 text-black border border-neutral-300 text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white transition flex items-center justify-center space-x-2 w-full sm:w-auto">
+                        <i class="fa-solid fa-file-csv"></i>
+                        <span>Exportar para Excel (CSV)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabela de Produtos -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-neutral-50 border-b border-neutral-200 text-neutral-500 uppercase font-bold tracking-wider">
+                            <th class="p-3">Produto / Categoria</th>
+                            <th class="p-3 text-center">Fornecedor</th>
+                            <th class="p-3 text-right">Custo Direto</th>
+                            <th class="p-3 text-right">Preço Venda</th>
+                            <th class="p-3 text-right">Taxas (%)</th>
+                            <th class="p-3 text-right">Lucro (R$)</th>
+                            <th class="p-3 text-right">Margem (%)</th>
+                            <th class="p-3 text-center">Markup</th>
+                            <th class="p-3 text-center">Saúde</th>
+                            <th class="p-3 text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody" class="divide-y divide-neutral-100">
+                        <!-- Conteúdo gerado via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-black text-white border-t border-neutral-800 py-6 text-center text-xs">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="uppercase tracking-widest text-neutral-400">© 2026 DZV MODA MASCULINA. Sistema Interno de Precificação.</p>
+        </div>
+    </footer>
+
+   <script>
+        let products = [];
+
+        // Buscar produtos no MySQL
+        async function fetchProducts() {
+            try {
+                const response = await fetch('/api/produtos');
+                products = await response.json();
+                renderTable();
+            } catch (error) {
+                console.error("Erro ao carregar do MySQL:", error);
+            }
+        }
+
+        function formatMoney(value) {
+            return parseFloat(value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function calculateMetrics() {
+            const costFabric = parseFloat(document.getElementById('costFabric').value) || 0;
+            const costPackaging = parseFloat(document.getElementById('costPackaging').value) || 0;
+            const costShippingIn = parseFloat(document.getElementById('costShippingIn').value) || 0;
+            const sellPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
+
+            const taxPercent = parseFloat(document.getElementById('taxPercent').value) || 0;
+            const cardFeePercent = parseFloat(document.getElementById('cardFeePercent').value) || 0;
+            const marketingPercent = parseFloat(document.getElementById('marketingPercent').value) || 0;
+
+            const totalDirectCost = costFabric + costPackaging + costShippingIn;
+            const totalVariablePercent = taxPercent + cardFeePercent + marketingPercent;
+            const totalVariableValue = sellPrice * (totalVariablePercent / 100);
+            const netProfit = sellPrice - totalDirectCost - totalVariableValue;
+            const netMargin = sellPrice > 0 ? (netProfit / sellPrice) * 100 : 0;
+            const markup = totalDirectCost > 0 ? (sellPrice / totalDirectCost) : 0;
+
+            const variableDecimal = totalVariablePercent / 100;
+            const breakeven = variableDecimal < 1 ? totalDirectCost / (1 - variableDecimal) : 0;
+
+            document.getElementById('kpiDirectCost').innerText = formatMoney(totalDirectCost);
+            document.getElementById('kpiVariableCosts').innerText = totalVariablePercent.toFixed(1) + '%';
+            document.getElementById('kpiVariableCostsVal').innerText = formatMoney(totalVariableValue) + ' por peça';
+            document.getElementById('kpiBreakeven').innerText = formatMoney(breakeven);
+            document.getElementById('kpiNetProfit').innerText = formatMoney(netProfit);
+            document.getElementById('kpiMargin').innerText = netMargin.toFixed(1) + '%';
+            document.getElementById('kpiMarkup').innerText = markup.toFixed(2) + 'x';
+
+            const marginCard = document.getElementById('marginCard');
+            const kpiHealthBadge = document.getElementById('kpiHealthBadge');
+            const kpiMargin = document.getElementById('kpiMargin');
+
+            if (netMargin >= 30) {
+                marginCard.className = "bg-white p-4 border-2 border-emerald-500 transition-all";
+                kpiMargin.className = "text-xl font-black text-emerald-600 mt-1";
+                kpiHealthBadge.className = "inline-block mt-1 text-[9px] font-extrabold uppercase px-2 py-0.5 bg-emerald-100 text-emerald-800";
+                kpiHealthBadge.innerText = "Excelente";
+            } else if (netMargin >= 20) {
+                marginCard.className = "bg-white p-4 border-2 border-blue-500 transition-all";
+                kpiMargin.className = "text-xl font-black text-blue-600 mt-1";
+                kpiHealthBadge.className = "inline-block mt-1 text-[9px] font-extrabold uppercase px-2 py-0.5 bg-blue-100 text-blue-800";
+                kpiHealthBadge.innerText = "Saudável";
+            } else if (netMargin >= 10) {
+                marginCard.className = "bg-white p-4 border-2 border-amber-500 transition-all";
+                kpiMargin.className = "text-xl font-black text-amber-600 mt-1";
+                kpiHealthBadge.className = "inline-block mt-1 text-[9px] font-extrabold uppercase px-2 py-0.5 bg-amber-100 text-amber-800";
+                kpiHealthBadge.innerText = "Atenção";
+            } else {
+                marginCard.className = "bg-white p-4 border-2 border-rose-500 transition-all";
+                kpiMargin.className = "text-xl font-black text-rose-600 mt-1";
+                kpiHealthBadge.className = "inline-block mt-1 text-[9px] font-extrabold uppercase px-2 py-0.5 bg-rose-100 text-rose-800";
+                kpiHealthBadge.innerText = "Perigoso";
+            }
+
+            document.getElementById('barTotalPrice').innerText = sellPrice.toFixed(2);
+            const pctDirect = sellPrice > 0 ? Math.max(0, (totalDirectCost / sellPrice) * 100) : 0;
+            const pctVar = sellPrice > 0 ? Math.max(0, totalVariablePercent) : 0;
+            const pctProfit = sellPrice > 0 ? Math.max(0, netMargin) : 0;
+
+            document.getElementById('barDirectCost').style.width = pctDirect + '%';
+            document.getElementById('barVariableCost').style.width = pctVar + '%';
+            document.getElementById('barNetProfit').style.width = pctProfit + '%';
+
+            document.getElementById('lblBarDirect').innerText = formatMoney(totalDirectCost);
+            document.getElementById('lblBarVariable').innerText = formatMoney(totalVariableValue);
+            document.getElementById('lblBarProfit').innerText = formatMoney(netProfit);
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = '';
+
+            products.forEach((p) => {
+                const costFabric = parseFloat(p.costFabric) || 0;
+                const costPackaging = parseFloat(p.costPackaging) || 0;
+                const costShippingIn = parseFloat(p.costShippingIn) || 0;
+                const sellPrice = parseFloat(p.sellPrice) || 0;
+                const taxPercent = parseFloat(p.taxPercent) || 0;
+                const cardFeePercent = parseFloat(p.cardFeePercent) || 0;
+                const marketingPercent = parseFloat(p.marketingPercent) || 0;
+
+                const totalDirect = costFabric + costPackaging + costShippingIn;
+                const totalVarPct = taxPercent + cardFeePercent + marketingPercent;
+                const totalVarVal = sellPrice * (totalVarPct / 100);
+                const profit = sellPrice - totalDirect - totalVarVal;
+                const margin = sellPrice > 0 ? (profit / sellPrice) * 100 : 0;
+                const markup = totalDirect > 0 ? (sellPrice / totalDirect) : 0;
+
+                let healthBadge = '';
+                if (margin >= 30) {
+                    healthBadge = '<span class="px-2 py-0.5 text-[9px] font-bold bg-emerald-100 text-emerald-800">EXCELENTE</span>';
+                } else if (margin >= 20) {
+                    healthBadge = '<span class="px-2 py-0.5 text-[9px] font-bold bg-blue-100 text-blue-800">SAUDÁVEL</span>';
+                } else if (margin >= 10) {
+                    healthBadge = '<span class="px-2 py-0.5 text-[9px] font-bold bg-amber-100 text-amber-800">ATENÇÃO</span>';
+                } else {
+                    healthBadge = '<span class="px-2 py-0.5 text-[9px] font-bold bg-rose-100 text-rose-800">PERIGOSO</span>';
+                }
+
+                const supplierButton = p.supplierUrl ? 
+                    `<a href="${p.supplierUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-2 py-1 bg-neutral-100 text-neutral-700 hover:bg-black hover:text-white rounded transition text-[10px] font-semibold">
+                        <i class="fa-solid fa-arrow-up-right-from-square mr-1 text-[9px]"></i> Ver Link
+                    </a>` : 
+                    `<span class="text-neutral-300 text-[10px] italic">Sem Link</span>`;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-neutral-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-black">
+                        <div>${p.name}</div>
+                        <div class="text-[10px] font-normal text-neutral-400 uppercase tracking-wider">${p.category || 'Geral'}</div>
+                    </td>
+                    <td class="p-3 text-center">${supplierButton}</td>
+                    <td class="p-3 text-right text-neutral-600">${formatMoney(totalDirect)}</td>
+                    <td class="p-3 text-right font-bold text-black">${formatMoney(sellPrice)}</td>
+                    <td class="p-3 text-right text-neutral-600">${totalVarPct.toFixed(1)}%</td>
+                    <td class="p-3 text-right font-bold ${profit >= 0 ? 'text-emerald-700' : 'text-rose-600'}">${formatMoney(profit)}</td>
+                    <td class="p-3 text-right font-bold ${margin >= 30 ? 'text-emerald-700' : margin >= 20 ? 'text-blue-700' : margin >= 10 ? 'text-amber-700' : 'text-rose-600'}">${margin.toFixed(1)}%</td>
+                    <td class="p-3 text-center text-neutral-700 font-semibold">${markup.toFixed(2)}x</td>
+                    <td class="p-3 text-center">${healthBadge}</td>
+                    <td class="p-3 text-center space-x-2">
+                        <button onclick="loadProductToForm(${p.id})" title="Carregar / Editar" class="text-neutral-500 hover:text-black">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteProduct(${p.id})" title="Excluir" class="text-neutral-400 hover:text-rose-600">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Salvar ou Editar no MySQL
+        async function saveProduct() {
+            const productData = {
+                id: document.getElementById('editingId').value || null,
+                name: document.getElementById('productName').value.trim() || 'Produto Sem Nome',
+                category: document.getElementById('productCategory').value,
+                supplierUrl: document.getElementById('supplierUrl').value.trim(),
+                costFabric: parseFloat(document.getElementById('costFabric').value) || 0,
+                costPackaging: parseFloat(document.getElementById('costPackaging').value) || 0,
+                costShippingIn: parseFloat(document.getElementById('costShippingIn').value) || 0,
+                sellPrice: parseFloat(document.getElementById('sellPrice').value) || 0,
+                taxPercent: parseFloat(document.getElementById('taxPercent').value) || 0,
+                cardFeePercent: parseFloat(document.getElementById('cardFeePercent').value) || 0,
+                marketingPercent: parseFloat(document.getElementById('marketingPercent').value) || 0
+            };
+
+            await fetch('/api/produtos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            });
+
+            resetForm();
+            fetchProducts();
+        }
+
+        // Deletar do MySQL
+        async function deleteProduct(id) {
+            if (confirm("Tem certeza que deseja excluir esta peça?")) {
+                await fetch(`/api/produtos/${id}`, { method: 'DELETE' });
+                fetchProducts();
+            }
+        }
+
+        function loadProductToForm(id) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+
+            document.getElementById('editingId').value = p.id;
+            document.getElementById('productName').value = p.name;
+            document.getElementById('productCategory').value = p.category || 'Camisetas';
+            document.getElementById('supplierUrl').value = p.supplierUrl || '';
+            document.getElementById('costFabric').value = p.costFabric;
+            document.getElementById('costPackaging').value = p.costPackaging;
+            document.getElementById('costShippingIn').value = p.costShippingIn;
+            document.getElementById('sellPrice').value = p.sellPrice;
+            document.getElementById('taxPercent').value = p.taxPercent;
+            document.getElementById('cardFeePercent').value = p.cardFeePercent;
+            document.getElementById('marketingPercent').value = p.marketingPercent;
+
+            document.getElementById('btnSaveText').innerText = 'Atualizar Peça na Planilha';
+            calculateMetrics();
+        }
+
+        function resetForm() {
+            document.getElementById('editingId').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productCategory').value = 'Camisetas';
+            document.getElementById('supplierUrl').value = '';
+            document.getElementById('costFabric').value = '0.00';
+            document.getElementById('costPackaging').value = '0.00';
+            document.getElementById('costShippingIn').value = '0.00';
+            document.getElementById('sellPrice').value = '0.00';
+            document.getElementById('taxPercent').value = '6.0';
+            document.getElementById('cardFeePercent').value = '4.0';
+            document.getElementById('marketingPercent').value = '10.0';
+            document.getElementById('btnSaveText').innerText = 'Salvar Peça na Planilha';
+            calculateMetrics();
+        }
+
+        function exportToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Produto,Categoria,Link Fornecedor,Custo Fabricacao (RS),Embalagem (RS),Frete Entrada (RS),CUSTO DIRETO TOTAL (RS),Preco Venda (RS),Imposto (%),Maquininha (%),Marketing (%),TOTAL TAXAS (%),LUCRO LIQUIDO (RS),MARGEM LIQUIDA (%),MARKUP\n";
+
+            products.forEach(p => {
+                const costFabric = parseFloat(p.costFabric) || 0;
+                const costPackaging = parseFloat(p.costPackaging) || 0;
+                const costShippingIn = parseFloat(p.costShippingIn) || 0;
+                const sellPrice = parseFloat(p.sellPrice) || 0;
+
+                const totalDirect = (costFabric + costPackaging + costShippingIn).toFixed(2);
+                const totalVarPct = ((parseFloat(p.taxPercent)||0) + (parseFloat(p.cardFeePercent)||0) + (parseFloat(p.marketingPercent)||0)).toFixed(2);
+                const totalVarVal = (sellPrice * (totalVarPct / 100));
+                const profit = (sellPrice - totalDirect - totalVarVal).toFixed(2);
+                const margin = sellPrice > 0 ? ((profit / sellPrice) * 100).toFixed(2) : "0.00";
+                const markup = totalDirect > 0 ? (sellPrice / totalDirect).toFixed(2) : "0.00";
+
+                const safeName = `"${(p.name || '').replace(/"/g, '""')}"`;
+                const safeCat = `"${(p.category || '').replace(/"/g, '""')}"`;
+                const safeUrl = `"${(p.supplierUrl || '').replace(/"/g, '""')}"`;
+
+                const row = `${safeName},${safeCat},${safeUrl},${costFabric.toFixed(2)},${costPackaging.toFixed(2)},${costShippingIn.toFixed(2)},${totalDirect},${sellPrice.toFixed(2)},${(parseFloat(p.taxPercent)||0).toFixed(2)},${(parseFloat(p.cardFeePercent)||0).toFixed(2)},${(parseFloat(p.marketingPercent)||0).toFixed(2)},${totalVarPct},${profit},${margin},${markup}`;
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Precificacao_DZV_Moda_Masculina.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        window.onload = function() {
+            calculateMetrics();
+            fetchProducts();
+        };
+    </script>
+</body>
+</html>
